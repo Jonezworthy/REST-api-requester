@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script>
+            function doAjax() {
+                var url = document.forms.restful.elements.url.value;
+                var method = document.forms.restful.elements.method.value;
+                var payload = document.forms.restful.elements.payload.value;
+
+                $.ajax({
+                    url: url
+                    , type: method
+                    , crossDomain: true
+                    , xhrFields: {
+                        withCredentials: true
+                    }
+                    , data: payload.length > 1 ? JSON.parse(payload) : {}
+                    , success: function (res) {
+                        document.getElementById("results").innerHTML = res;
+                    }
+                    , error: function (res) {
+                        document.getElementById("results").innerHTML = res.responseText;
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <style>
+            .url {
+                height: 40px; 
+                width: 600px;
+            }
+            .method{
+                height: 40px;
+                width: 100px;
+            }
+            .send {
+                height: 40px;
+                width: 60px;
+            }
+            .payload {
+                height: 40px;
+                width: 600px;
+            }
+        </style>
+        <h2>RESTful</h2>
+        <form name="restful">
+            <input name="url" type="text" value="" class="url" />
+            <select name="method" class="method">
+                <option value="get">Get</option>
+                <option value="post">Post</option>
+                <option value="put">Put</option>
+                <option value="delete">Delete</option>
+            </select>
+            <input type="button" onclick="doAjax()" value="send" class="send" />
+            <br />
+            <h3>Payload</h3>
+            <input type="text" name="payload" class="payload" />
+
+        </form>
+        <pre id="results">
+        </pre>
+    </body>
+</html>
