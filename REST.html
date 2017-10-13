@@ -6,7 +6,7 @@
                 var url = document.forms.restful.elements.url.value;
                 var method = document.forms.restful.elements.method.value;
                 var payload = document.forms.restful.elements.payload.value;
-
+                document.getElementById("history").innerHTML += method.toUpperCase() + ": <a href='#' data-method='" + method + "' onclick='restore(this)' >" + url + "</a><br />";
                 $.ajax({
                     url: url
                     , type: method
@@ -16,12 +16,16 @@
                     }
                     , data: payload.length > 1 ? JSON.parse(payload) : {}
                     , success: function (res) {
-                        document.getElementById("results").innerHTML = res;
+                        document.getElementById("results").innerHTML = JSON.stringify(res);
                     }
                     , error: function (res) {
                         document.getElementById("results").innerHTML = res.responseText;
                     }
                 });
+            }
+            function restore(ele){
+                document.forms.restful.elements.url.value = $(ele).html();
+                $('.method').val($(ele).data('method'));
             }
         </script>
     </head>
@@ -29,7 +33,7 @@
         <style>
             .url {
                 height: 40px; 
-                width: 600px;
+                width: 1000px;
             }
             .method{
                 height: 40px;
@@ -41,7 +45,7 @@
             }
             .payload {
                 height: 40px;
-                width: 600px;
+                width: 1000px;
             }
         </style>
         <h2>RESTful</h2>
@@ -61,5 +65,7 @@
         </form>
         <pre id="results">
         </pre>
+        <h3>History</h3>
+        <div id="history"></div>
     </body>
 </html>
